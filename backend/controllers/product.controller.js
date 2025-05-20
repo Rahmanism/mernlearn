@@ -17,12 +17,23 @@ export const getAll = async (req, res) => {
 export const getById = async (req, res) => {
   const { id } = req.params
 
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(404)
+      .json({ success: false, message: 'Invalid id.' })
+  }
+
   try {
     const product = await Product.findById(id)
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Product not found.' })
+    }
     res.status(200).json({ success: true, data: product })
   } catch (error) {
     console.error('Error in retrieving a product: ', error.message)
-    res.status(400).json({ success: false, message: 'Product not found.' })
+    res.status(404).json({ success: false, message: 'Product not found.' })
   }
 }
 
@@ -55,13 +66,18 @@ export const update = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res
       .status(404)
-      .json({ success: false, message: 'Product not found.' })
+      .json({ success: false, message: 'Invalid id .' })
   }
 
   try {
     const updatedProduct = await Product.findByIdAndUpdate(id, product, {
       new: true,
     })
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Product not found.' })
+    }
     res.status(200).json({ success: true, data: updatedProduct })
   } catch (error) {
     console.error('Something happend:', error.message)
@@ -72,8 +88,19 @@ export const update = async (req, res) => {
 export const deleteItem = async (req, res) => {
   const { id } = req.params
 
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(404)
+      .json({ success: false, message: 'Invalid id.' })
+  }
+
   try {
-    await Product.findByIdAndDelete(id)
+    const product = await Product.findByIdAndDelete(id)
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Product not found.' })
+    }
     res
       .status(200)
       .json({ success: true, message: 'Product has been deleted.' })
