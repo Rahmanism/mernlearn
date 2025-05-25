@@ -15,6 +15,9 @@ const PORT = process.env.PORT
 // Allows us to accept JSON data in the body.
 app.use(express.json())
 
+// Connect MongoDB
+connectDb()
+
 app.get('/', (req, res) => {
   res.send('Server is ready and connected to mongodb.')
 })
@@ -22,8 +25,5 @@ app.get('/', (req, res) => {
 app.use('/api/products', productRoutes)
 
 app.listen(PORT, () => {
-  // Connect MongoDB
-  connectDb()
   console.log(`Server running on port ${PORT}`)
 })
-console.log('heLLo5')
