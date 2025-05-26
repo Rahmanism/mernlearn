@@ -1,53 +1,40 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  ClientOnly,
-  HStack,
-  Heading,
-  Progress,
-  RadioGroup,
-  Skeleton,
-  VStack,
-} from '@chakra-ui/react'
-import { ColorModeToggle } from './components/color-mode-toggle'
+import { Box } from '@chakra-ui/react'
+import { Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import Create from './pages/Create'
+import Edit from './pages/Edit'
+import Navbar from './components/Navbar'
+import { useColorModeValue } from './components/ui/color-mode'
 
 function App() {
   return (
     <Box
-      textAlign="center"
-      fontSize="xl"
-      pt="30vh"
+      minH={'100vh'}
+      color={useColorModeValue('black', 'white')}
+      bg={useColorModeValue('gray.100', 'gray.800')}
     >
-      <VStack gap="8">
-        <Heading
-          size="2xl"
-          letterSpacing="tight"
-        >
-          Welcome to Chakra UI v3 + Vite
-        </Heading>
-
-        <HStack>
-          <Button>Let's go!</Button>
-        </HStack>
-      </VStack>
-
+      <Navbar />
       <Box
-        pos="absolute"
-        top="4"
-        right="4"
+        position={'absolute'}
+        top={'15vh'}
+        minH={'85vh'}
+        w='full'
+        padding={'1rem'}
       >
-        <ClientOnly
-          fallback={
-            <Skeleton
-              w="10"
-              h="10"
-              rounded="md"
-            />
-          }
-        >
-          <ColorModeToggle />
-        </ClientOnly>
+        <Routes>
+          <Route
+            path="/"
+            element={<Home />}
+          />
+          <Route
+            path="/create"
+            element={<Create />}
+          />
+          <Route
+            path="/edit/:id"
+            element={<Edit />}
+          />
+        </Routes>
       </Box>
     </Box>
   )
