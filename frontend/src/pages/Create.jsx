@@ -8,19 +8,24 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useColorModeValue } from '../components/ui/color-mode'
+import useProductStore from '../store/product.store'
+
+const productInitialState = {
+  title: '',
+  price: 0,
+  image: '',
+}
 
 function Create() {
-  const [newProduct, setNewProduct] = useState({
-    title: '',
-    price: 0,
-    image: '',
-  })
+  const { addProduct } = useProductStore()
+  const [newProduct, setNewProduct] = useState(productInitialState)
 
-  const handleAddProduct = () => {
+  const handleAddProduct = async (event) => {
+    event.preventDefault()
     // Add the new product to the database or perform any other action
-    console.log(newProduct)
+    await addProduct(newProduct)
     // Reset the form after adding the product
-    setNewProduct({ title: '', price: 0, image: '' })
+    setNewProduct(productInitialState)
   }
 
   return (
@@ -62,7 +67,7 @@ function Create() {
               onChange={(e) =>
                 setNewProduct({
                   ...newProduct,
-                  price: e.target.value,
+                  price: +e.target.value,
                 })
               }
             />
