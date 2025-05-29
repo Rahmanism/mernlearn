@@ -86,7 +86,10 @@ function ProductCard({ product }) {
               onSubmit={() => setIsEditing(false)}
             />
             <Dialog.CloseTrigger asChild>
-              <CloseButton size="sm" />
+              <CloseButton
+                size="sm"
+                onClick={() => setIsEditing(false)}
+              />
             </Dialog.CloseTrigger>
           </Dialog.Content>
         </Dialog.Positioner>

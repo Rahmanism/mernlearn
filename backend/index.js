@@ -5,11 +5,13 @@ import dotenv from 'dotenv'
 import { connectDb } from './config/db.js'
 // import Product from './models/product.model.js'
 import productRoutes from './routes/product.route.js'
+import path from 'path'
 
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT
+const __dirname = path.resolve()
 
 app.use(
   cors({ oringin: '*' })
@@ -21,11 +23,23 @@ app.use(express.json())
 // Connect MongoDB
 connectDb()
 
-app.get('/', (req, res) => {
-  res.send('Server is ready and connected to mongodb.')
-})
+// app.get('/', (req, res) => {
+//   res.send('Server is ready and connected to mongodb.')
+// })
 
 app.use('/api/products', productRoutes)
+
+if (process.env.NODE_ENV === 'production') {
+  console.log('PRODUCTION')
+  app.use(express.static(path.join(__dirname, '/frontend/dist')))
+  app.get('/', (req, res) => {
+    console.log('req', req)
+    // res.sendFile('/Users/mostafa/source/mern-learn/frontend/dist/index.html')
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+  })
+} else {
+  console.log('DEVELOPMENT')
+}
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

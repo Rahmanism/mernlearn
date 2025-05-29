@@ -4,9 +4,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./backend/index.js",
-    "dev": "nodemon ./backend/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=production node ./backend/index.js",
+    "dev": "NODE_ENV=development nodemon ./backend/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm i && (cd frontend && npm i && vite build)"
   },
   "keywords": [],
   "author": "",
