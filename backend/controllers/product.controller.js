@@ -39,8 +39,6 @@ export const getById = async (req, res) => {
 
 export const create = async (req, res) => {
   const product = req.body // data sent by user
-  console.log('request body', req.body)
-  console.log('product', product)
 
   // Data validation
   if (!product?.title || !product?.price || !product?.image) {

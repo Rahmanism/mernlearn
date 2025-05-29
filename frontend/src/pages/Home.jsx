@@ -1,34 +1,71 @@
-import { useEffect, useState } from 'react'
-import { Container, Heading } from '@chakra-ui/react'
+import { useEffect } from 'react'
+import { Container, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import ProductCard from '../components/ProductCard'
 import useProductStore from '../store/product.store'
+import { Link } from 'react-router-dom'
+import { useColorModeValue } from '../components/ui/color-mode'
 
 function Home() {
   const { products, getProducts } = useProductStore()
-  useEffect(() => {
-    getProducts()
-  }, [])
-  console.log('|PRODUCTS||', products)
 
-  if (products.length === 0) {
-    return <div>Loading...</div>
-  }
+  useEffect(() => {
+    ;(async () => {
+      await getProducts()
+    })()
+  }, [getProducts])
 
   return (
-    <Container maxW={'container.sm'}>
-      <Heading
+    <Container
+      maxW={'container.sm'}
+      bg={useColorModeValue('gray.100', 'gray.800')}
+      mb={8}
+      pb={8}
+    >
+      <Text
         as="h2"
-        size="2xl"
+        fontSize="4xl"
+        fontWeight={'bold'}
         mb={8}
+        bgGradient="linear-gradient(to left, {colors.red.500}, {colors.blue.500})"
+        bgClip={'text'}
+        textAlign={'center'}
       >
         Products
-      </Heading>
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-        />
-      ))}
+      </Text>
+      {products.length === 0 && (
+        <>
+          <Text
+            fontSize={'xl'}
+            textAlign={'center'}
+            fontWeight={'bold'}
+            color="gray.500"
+          >
+            No products yet...{' '}
+            <Link to="/create">
+              <Text
+                as="span"
+                color={'blue.500'}
+                _hover={{ textDecoration: 'underline' }}
+              >
+                Add Product
+              </Text>
+            </Link>
+          </Text>
+        </>
+      )}
+      <VStack spacing={8}>
+        <SimpleGrid
+          columns={{ base: 1, md: 3 }}
+          gap={8}
+        >
+          {products.map((product) => (
+            <ProductCard
+              key={product._id}
+              product={product}
+            />
+          ))}
+        </SimpleGrid>
+      </VStack>
     </Container>
   )
 }
