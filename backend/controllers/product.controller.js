@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import Product from '../models/product.model.js'
 
 export const getAll = async (req, res) => {
-  const products = await Product.find().lean()
+  const products = await Product.find().sort({ createdAt: -1 }).lean()
 
   try {
     res.status(200).json({ success: true, data: products })
@@ -39,6 +39,8 @@ export const getById = async (req, res) => {
 
 export const create = async (req, res) => {
   const product = req.body // data sent by user
+  console.log('request body', req.body)
+  console.log('product', product)
 
   // Data validation
   if (!product?.title || !product?.price || !product?.image) {
